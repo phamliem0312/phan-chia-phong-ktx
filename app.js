@@ -348,7 +348,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
     );
     
     if (phongTrongIndex !== -1) {
-      sinhVien['KTX'] = phongNam[phongTrongIndex]['KTX'];
+      sinhVien['KTX'] = phongNu[phongTrongIndex]['KTX'];
       sinhVien['Phòng'] = phongNu[phongTrongIndex]['Phòng'];
       sinhVien['Khu'] = phongNu[phongTrongIndex]['Khu'];
       phongNu[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNu[phongTrongIndex]['Số lượng thực tế']) - 1;
