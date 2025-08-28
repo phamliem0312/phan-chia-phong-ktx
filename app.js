@@ -5,7 +5,7 @@ const fs = require('fs');
 const XLSX = require('xlsx');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 // Cấu hình EJS làm view engine
 app.set('view engine', 'ejs');
@@ -312,6 +312,11 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   const sinhVienChuaPhanPhong = sinhVienData.filter(sv => 
     !sv['Phòng'] || sv['Phòng'].trim() === '' || sv['Phòng'] === null
   );
+
+  // Lọc sinh viên đã được phân phòng
+  const sinhVienDaPhanPhong = sinhVienData.filter(sv => 
+    sv['Phòng'] && sv['Phòng'].trim() !== '' && sv['Phòng'] !== null
+  );
   
   // Phân chia sinh viên nam
   const sinhVienNam = sinhVienChuaPhanPhong.filter(sv => 
@@ -333,7 +338,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
     
     if (phongTrongIndex !== -1) {
       sinhVien['KTX'] = phongNam[phongTrongIndex]['KTX'];
-      sinhVien['Phòng'] = phongNam[phongTrongIndex]['Phòng'];
+      sinhVien['Phòng'] = sinhVien['Phòng'] ?? phongNam[phongTrongIndex]['Phòng'];
       sinhVien['Khu'] = phongNam[phongTrongIndex]['Khu'];
       phongNam[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNam[phongTrongIndex]['Số lượng thực tế']) - 1;
     }
@@ -349,11 +354,17 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
     
     if (phongTrongIndex !== -1) {
       sinhVien['KTX'] = phongNu[phongTrongIndex]['KTX'];
-      sinhVien['Phòng'] = phongNu[phongTrongIndex]['Phòng'];
+      sinhVien['Phòng'] = sinhVien['Phòng'] ?? phongNu[phongTrongIndex]['Phòng'];
       sinhVien['Khu'] = phongNu[phongTrongIndex]['Khu'];
       phongNu[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNu[phongTrongIndex]['Số lượng thực tế']) - 1;
     }
     
+    students.push(sinhVien);
+  }
+
+  for (const sinhVien of sinhVienDaPhanPhong) {
+    sinhVien['Chia thủ công'] = 'X';
+
     students.push(sinhVien);
   }
   
