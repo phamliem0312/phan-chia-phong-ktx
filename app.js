@@ -331,7 +331,6 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   const sinhVienDaPhanPhong = sinhVienData.filter(sv => 
     sv['Phòng'] && sv['Phòng'].trim() !== '' && sv['Phòng'] !== null
   );
-  console.log(sinhVienData);
   
   // Phân chia sinh viên nam
   const sinhVienNam = sinhVienChuaPhanPhong.filter(sv => 
