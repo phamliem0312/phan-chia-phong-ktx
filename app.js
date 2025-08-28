@@ -297,8 +297,22 @@ app.post('/api/phan-chia-phong', async (req, res) => {
 // Hàm xử lý phân chia phòng
 async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   // Tạo bản sao để không thay đổi dữ liệu gốc
-  const phongData = JSON.parse(JSON.stringify(danhSachPhong));
-  const sinhVienData = JSON.parse(JSON.stringify(danhSachSinhVien));
+  const phongData = JSON.parse(JSON.stringify(danhSachPhong)).map(phong => {
+    let phongMoi = {};
+    for (let key in phong) {
+      phongMoi[key.trim()] = phong[key];
+    }
+    return phongMoi;
+  });
+  const sinhVienData = JSON.parse(JSON.stringify(danhSachSinhVien)).map(sv => {
+    let sinhVien = {};
+
+    for (let key in sv) {
+      sinhVien[key.trim()] = sv[key];
+    }
+
+    return sinhVien;
+  });
 
   // Phân loại phòng theo giới tính
   const phongNam = phongData.filter(phong => 
@@ -317,6 +331,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   const sinhVienDaPhanPhong = sinhVienData.filter(sv => 
     sv['Phòng'] && sv['Phòng'].trim() !== '' && sv['Phòng'] !== null
   );
+  console.log(sinhVienData);
   
   // Phân chia sinh viên nam
   const sinhVienNam = sinhVienChuaPhanPhong.filter(sv => 
