@@ -347,7 +347,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   // Phân phòng cho sinh viên nam
   for (let sinhVien of sinhVienNam) {
     const phongTrongIndex = phongNam.findIndex(phong => 
-      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0
+      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0 && phong['KTX'].trim() == sinhVien['KTX'].trim()
     );
     
     if (phongTrongIndex !== -1) {
@@ -363,7 +363,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   // Phân phòng cho sinh viên nữ
   for (let sinhVien of sinhVienNu) {
     const phongTrongIndex = phongNu.findIndex(phong => 
-      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0
+      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0 && phong['KTX'].trim() == sinhVien['KTX'].trim()
     );
     
     if (phongTrongIndex !== -1) {
