@@ -313,7 +313,7 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
 
     return sinhVien;
   });
-
+  
   // Phân loại phòng theo giới tính
   const phongNam = phongData.filter(phong => 
     phong['Giới tính'] && phong['Giới tính'].trim().toLowerCase() === 'nam'
@@ -324,12 +324,12 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   
   // Lọc sinh viên chưa được phân phòng
   const sinhVienChuaPhanPhong = sinhVienData.filter(sv => 
-    !sv['Phòng'] || sv['Phòng'].trim() === '' || sv['Phòng'] === null
+    !sv['Phòng'] || sv['Phòng'].toString().trim() === '' || sv['Phòng'] === null
   );
-
+  
   // Lọc sinh viên đã được phân phòng
   const sinhVienDaPhanPhong = sinhVienData.filter(sv => 
-    sv['Phòng'] && sv['Phòng'].trim() !== '' && sv['Phòng'] !== null
+    sv['Phòng'] && sv['Phòng'].toString().trim() !== '' && sv['Phòng'] !== null
   );
   
   // Phân chia sinh viên nam
@@ -338,21 +338,21 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   );
   
   // Phân chia sinh viên nữ  
-  const sinhVienNu = sinhVienChuaPhanPhong.filter(sv => 
-    sv['Giới tính'] && sv['Giới tính'].trim().toLowerCase() === 'nữ'
-  );
+  const sinhVienNu = sinhVienChuaPhanPhong.filter(sv => {
+    return sv['Giới tính'] && sv['Giới tính'].trim().toLowerCase() === 'nữ';
+  });
 
   let students = [];
 
   // Phân phòng cho sinh viên nam
   for (let sinhVien of sinhVienNam) {
     const phongTrongIndex = phongNam.findIndex(phong => 
-      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0 && phong['KTX'].trim() == sinhVien['KTX'].trim()
+      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0
     );
     
     if (phongTrongIndex !== -1) {
       sinhVien['KTX'] = phongNam[phongTrongIndex]['KTX'];
-      sinhVien['Phòng'] = sinhVien['Phòng'] ?? phongNam[phongTrongIndex]['Phòng'];
+      sinhVien['Phòng'] = sinhVien['Phòng'] === '' ? phongNam[phongTrongIndex]['Phòng'] : sinhVien['Phòng'];
       sinhVien['Khu'] = phongNam[phongTrongIndex]['Khu'];
       phongNam[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNam[phongTrongIndex]['Số lượng thực tế']) - 1;
     }
@@ -363,12 +363,12 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
   // Phân phòng cho sinh viên nữ
   for (let sinhVien of sinhVienNu) {
     const phongTrongIndex = phongNu.findIndex(phong => 
-      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0 && phong['KTX'].trim() == sinhVien['KTX'].trim()
+      phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0
     );
     
     if (phongTrongIndex !== -1) {
       sinhVien['KTX'] = phongNu[phongTrongIndex]['KTX'];
-      sinhVien['Phòng'] = sinhVien['Phòng'] ?? phongNu[phongTrongIndex]['Phòng'];
+      sinhVien['Phòng'] = sinhVien['Phòng'] === '' ? phongNu[phongTrongIndex]['Phòng'] : sinhVien['Phòng'];
       sinhVien['Khu'] = phongNu[phongTrongIndex]['Khu'];
       phongNu[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNu[phongTrongIndex]['Số lượng thực tế']) - 1;
     }
