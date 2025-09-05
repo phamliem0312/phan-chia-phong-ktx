@@ -365,10 +365,10 @@ async function phanChiaPhong(danhSachPhong, danhSachSinhVien) {
     const phongTrongIndex = phongNu.findIndex(phong => 
       phong['Số lượng thực tế'] && parseInt(phong['Số lượng thực tế']) > 0
     );
-    
+
     if (phongTrongIndex !== -1) {
       sinhVien['KTX'] = phongNu[phongTrongIndex]['KTX'];
-      sinhVien['Phòng'] = sinhVien['Phòng'] === '' ? phongNu[phongTrongIndex]['Phòng'] : sinhVien['Phòng'];
+      sinhVien['Phòng'] = sinhVien['Phòng'] === '' || !sinhVien['Phòng'] ? phongNu[phongTrongIndex]['Phòng'] : sinhVien['Phòng'];
       sinhVien['Khu'] = phongNu[phongTrongIndex]['Khu'];
       phongNu[phongTrongIndex]['Số lượng thực tế'] = parseInt(phongNu[phongTrongIndex]['Số lượng thực tế']) - 1;
     }
